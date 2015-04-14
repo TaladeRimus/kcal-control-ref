@@ -27,13 +27,24 @@ class Usuario{
 	}
 
 	function __set($prop, $val){
-		$this->prop = $val;
+		$this->$prop = $val;
 	}
 
 	function __get($prop){
-		return $this->prop;
+		return $this->$prop;
 	}
 
-}
+	function toArray(){
 
-?>
+		return array(':nome'=>$this->nome,
+					 ':email'=>$this->email, 
+					 ':sexo'=>$this->sexo, 
+					 ':senha'=>$this->senha, 
+					 ':altura'=>$this->altura, 
+					 ':peso'=>$this->peso, 
+					 ':idade'=>$this->idade, 
+					 ':objetivo'=>$this->objetivo);
+
+
+	}
+}

@@ -10,37 +10,19 @@ class UsuariosPDO extends BancoPDO {
 
 	}
 
-	public function inserirUsuario($usuario){
+	public function inserirUsuario(Usuario $usuario){
 
-		$nome = $usuario->nome;
-		var_dump($nome);
-		die();
 
 		try {
 
 			
-			$stm = $this->con->prepare("insert into usuario (id, nome, email, sexo, senha, altura, peso, idade, objetivo) values (?,?,?,?,?,?,?,?,?)");
-		/*$id = $usuario->id;
-		$nome = $usuario->nome;
-		$email = $usuario->email;
-		$sexo = $usuario->sexo;
-		$senha = $usuario->senha;
-		$altura = $usuario->altura;
-		$peso = $usuario->peso;
-		$idade = $usuario->idade;
-			$objetivo = $usuario->objetivo;*/
+			$stm = $this->con->prepare("insert into usuario (nome, email, sexo, senha, altura, peso, idade, objetivo) 
+										values (':nome', ':email', ':sexo', ':senha', ':altura', ':peso', ':idade', ':objetivo')");
+			
 
-			$stm->bindValue(1, $usuario->id);
-			$stm->bindValue(2, $usuario->nome);
-			$stm->bindValue(3, $usuario->email);
-			$stm->bindValue(4, $usuario->sexo);
-			$stm->bindValue(5, $usuario->senha);
-			$stm->bindValue(6, $usuario->altura);
-			$stm->bindValue(7, $usuario->peso);
-			$stm->bindValue(8, $usuario->idade);
-			$stm->bindValue(9, $usuario->objetivo);
-			$stm->execute();
-			echo "<script>alert('Usuario criado com sucesso')</alert>";
+			$stm->execute($usuario->toArray());
+			
+			echo "Usuário cadastrado com sucesso";
 
 
 		} catch (Exception $e) {
@@ -49,6 +31,54 @@ class UsuariosPDO extends BancoPDO {
 
 	}
 
+	public function autenticar($usuario){
+
+		try {
+
+			$stm = $this->con->prepare("select * from usuario 
+										where email = ':email' and senha = ':senha'");
+
+			$stm->execute($usuario->toArray());
+
+			$stm->execute();
+
+			if ($stm->rowCount() == 0) {
+				return null;
+			}
+
+			else {
+				$dados = $stm->fetch(PDO::FETCH_OBJ);
+
+				return $dados;
+			}
+
+			
+		} catch (Exception $e) {
+			echo "Erro: " . $e->getMessage();
+		}
+
+	}
+
+	public function retornaDados($usuario){
+
+		$stm = $this->con->prepare("SELECT * FROM usuario 
+									WHERE id = ':id'");
+
+		$stm->execute($usuario->toArray());
+
+	}
+
+	public function buscaPeso(){
+
+		$stm = $this->con->prepare("SELECT *,DATE_FORMAT(data_pesagem, '%d/%m/%y')
+									as novaData 
+									FROM historico_peso 
+									ORDER BY data_pesagem ASC");
+	}
+
+	public function inserePeso(){
+
+	}
 
 }
 

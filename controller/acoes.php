@@ -20,6 +20,8 @@ include "../PDO/UsuariosPDO.class.php";
 
 	$acoes = new UsuariosPDO();
 	$acoes->inserirUsuario($usuario);
+	
+	header("Location: ../index.php");
 
 }
 ?>

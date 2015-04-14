@@ -1,10 +1,10 @@
 <header>
 	<div id="header_menu" class="logo">
-		<a href="/kcal-control" title="KcalControl">
+		<a href="/Kcal-Control-ref" title="KcalControl">
                 	<h1>KcalControl</h1>
                 </a>
         <ul>
-            <li><a href="page_cadastro_usuario.php" title="#">Cadastre-se</a></li>
+            <li><a href="view/cadastro.php" title="#">Cadastre-se</a></li>
             <li><a href="#" title="#" onclick="addalimento('login');">Login</a></li>
         </ul>
     </div>
@@ -15,7 +15,7 @@
         <span id="btn-fechar" onclick="$('.tb').fadeOut()" class="bt_excluir3"></span>
         <h2>Entre</h2>
 
-     <form method="POST" action="autenticacao.php">
+     <form method="POST" action="controller/autenticacao.php">
         <input method="POST" type="text" placeholder="Email" id="email" name="email"/>    
         <input method="POST" type="password" placeholder="Senha" id="senha" name="senha"</input> 
         <input type="submit" value="Entrar" id="btn_entrar" id="entrar" name="entrar"/> 
