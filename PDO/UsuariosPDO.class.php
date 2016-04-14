@@ -31,14 +31,13 @@ class UsuariosPDO extends BancoPDO {
 
 	}
 
-	public function autenticar($usuario){
+	public function autenticar($email, $senha){
+
 
 		try {
 
-			$stm = $this->con->prepare("select * from usuario 
-										where email = ':email' and senha = ':senha'");
-
-			$stm->execute($usuario->toArray());
+			$stm = $this->con->prepare("SELECT * from usuario 
+										where email = '".$email."' and senha = '".$senha."'");
 
 			$stm->execute();
 
@@ -59,13 +58,22 @@ class UsuariosPDO extends BancoPDO {
 
 	}
 
-	public function retornaDados($usuario){
+	public function retornaDados($id){
+
 
 		$stm = $this->con->prepare("SELECT * FROM usuario 
-									WHERE id = ':id'");
+									WHERE id = '".$id."'");
 
-		$stm->execute($usuario->toArray());
+		$stm->execute();
 
+		if($stm->rowCount() == 0 ) {
+			return null;
+		}
+		else {
+			$dados = $stm->fetch(PDO::FETCH_OBJ);
+
+			return $dados;
+		}
 	}
 
 	public function buscaPeso(){

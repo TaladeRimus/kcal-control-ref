@@ -47,9 +47,9 @@ function addalimento(aux){
         <input type="text" name="idade" placeholder="Idade"/>
         <label>Objetivo: </label>
         <select name="objetivo">
-          <option value="Perder">Perder peso</option>
-          <option value="Ganhar">Ganhar peso</option>
-          <option value="Controlar">Controlar peso</option>
+          <option value="perder" name="perder">Perder peso</option>
+          <option value="ganhar" name="ganhar">Ganhar peso</option>
+          <option value="controlar" name="controlar">Controlar peso</option>
         </select>
         <input type="button" value="Voltar" onclick="proximo('cadastro1');" class="btn-back"/>
         <input name="cadastrar" type="submit" value="Salvar" class="btn-proximo-mini"/>

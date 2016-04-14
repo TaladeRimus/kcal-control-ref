@@ -9,15 +9,18 @@
 		$email = $_POST["email"];
 		$senha = $_POST["senha"];
 
-		$usuario = new Usuario("", "", $email, "", $senha, "", "","", "");
+		$usuario = new Usuario("", "", $email, "", md5($senha), "", "","", "");
 
 		$pdo = new UsuariosPDO();
-
-		if(($return = $pdo->autenticar($usuario)) == null){
+		
+		$return = $pdo->autenticar($email, md5($senha));
+		
+		if($return == null){
 			header("Location: ../index.php");
 		} else {
+
 			session_start();
 			$_SESSION["id"] = session_id();
-			$_SESSION["idusuario"] = $return["id"];
+			$_SESSION["idusuario"] = $return->id;
 		}
 	}

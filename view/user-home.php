@@ -52,8 +52,11 @@
 <?php if(!isset($_SESSION["id"])){include '../skin/includes/header.inc.php';}
 	  else{include '../skin/includes/headerLogout.inc.php';} 
 
-	  $user = new UsuariosPDO();
-	  $dados = $user->retornaDados($_SESSION["idusuario"]);
+	$user = new UsuariosPDO();
+	$dados = $user->retornaDados($_SESSION["idusuario"]);
+
+
+
 ?>
 
 <div class="content_center">
@@ -67,9 +70,7 @@
 				<label>Nome: </label>
 				<?php 
 					
-					var_dump($dados);
-					die("die");
-					$dados->nome;
+					echo $dados->nome;
 
 				 ?>
 			</li>
@@ -77,7 +78,7 @@
 				<label>Idade: </label>
 				<?php 
 
-					
+					echo $dados->idade;
 
 				 ?>
 			</li>
@@ -85,6 +86,7 @@
 				<label>Peso: </label>
 				<?php 
 
+					echo $dados->peso;
 					
 				 ?>
 			</li>
@@ -92,7 +94,7 @@
 				<label>Objetivo: </label>
 				<?php 
 
-					
+					echo $dados->objetivo;
 
 				 ?>
 			</li>
