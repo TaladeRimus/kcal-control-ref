@@ -66,6 +66,15 @@ header {
 	border-left: 1px solid #ccc;
 	cursor: pointer;
 }
+#btn-busca-dieta {
+    border: none;
+    text-indent: -99999999px;
+    background: url('../images/lupa.png') no-repeat 100%;
+    width: 25px;
+    height: 23px;
+    /*margin: 20px 0px 0px 0px;*/
+    cursor: pointer;
+}
 #Pesquisar{
 	width: 610px;
 	margin:15px auto;
@@ -211,6 +220,8 @@ header {
 .content_box,
 #Container{ width:1020px; margin:90px auto;}
 #tabela{float: right; background: #eeeeee; border: 1px solid green; margin: 30px 0;width: 530px; border-radius:5px; box-shadow: 0px 0px 13px; padding:0 0 30px 0;}
+#tabela2{float: right; background: #eeeeee; border: 1px solid green; margin: 30px 0;width: 530px; border-radius:5px; box-shadow: 0px 0px 13px; padding:0 0 30px 0;}
+#tabela2 form {margin-left: auto;margin-right: auto;text-align: center;}
 #nova_tabela{ width:500px; float: left;padding: 10px 0 0 29px;}
 .salvar_alimentos{ width:344px; height:79px; background:#D90000; border:1px solid black; border-radius:5px; float: right;
 margin: 10px 50px 20px 0;color: white; text-align: center; font-family:Facebook Letter Faces; font-size: 40px; padding: 10px 0 0;}
@@ -334,6 +345,13 @@ margin: 10px 50px 20px 0;color: white; text-align: center; font-family:Facebook 
 	width: 492px!important;
 	height: 58px!important;
 }
+.btn-proximo2 {
+    cursor: pointer;
+    background-color: green;
+    color: white;  
+	width: 240px!important;
+	height: 58px!important;
+}
 .btn-back {
     cursor: pointer;
     background-color: red;
@@ -361,7 +379,7 @@ margin: 10px 50px 20px 0;color: white; text-align: center; font-family:Facebook 
 }
 .hidden{ display:none!important;}
 .salvar_refeicao{
-	float: left;
+	/*float: left;*/
 	margin: 0 0 0 95px;
 	}
 .salvar_refeicao #nome{
@@ -376,13 +394,14 @@ margin: 10px 50px 20px 0;color: white; text-align: center; font-family:Facebook 
 	}
 .salvar_refeicao label	{
 	color: black;
+	font-size: 25px;
 	font-family: Facebook Letter Faces;
 	display: block;
 	margin: 0 0 7px 0;
 	}
 #acaos{
-	height: 35px;
-	width: 347px;
+	height: 50px;
+	width: 100%;
 	margin: 7px 0;
 	border-radius: 5px;
 	background: green;
@@ -391,7 +410,7 @@ margin: 10px 50px 20px 0;color: white; text-align: center; font-family:Facebook 
 	box-shadow: 0px 0px 20px;
 	color: white;
 	font-family: Facebook Letter Faces;
-	font-size: 20PX;	
+	font-size: 25PX;	
 	}
 .box_centro{
 	margin: auto;
@@ -410,7 +429,7 @@ footer{ background:url(../images/bg_footer.png) repeat-x; height:308px; float:le
 .redes_sociais ul{float: left; width: 100%;}
 .up_redes_sociais{ margin:-27px 0 0 0;}
 #logo_footer{float: right; margin: 60px 0 0 0;}
-#facebook{background:url(../images/facebook.png) repeat-x; height:105px; width:143px; margin:17px 25px 0 0; float:left;}
+#facebook{background:url(../images/facebook-icon.png) repeat-x; height:128px; width:128px; margin:17px 25px 0 0; float:left;}
 #twitter{background:url(../images/twitter.png) repeat-x; height:96px; width:130px; margin:28px 0 0 0; float:left;}
 #instagram{background:url(../images/instagram.png) repeat-x; height:66px; width:78px; margin: 0 0 0 50px; float:left;}
 #youtube{background:url(../images/youtube.png) repeat-x; height:74px; width:100px; margin:38px 0 0 0; float:left;}
@@ -420,7 +439,7 @@ footer{ background:url(../images/bg_footer.png) repeat-x; height:308px; float:le
 
 
 .content_center{ width:1020px; margin:auto;}
-.content_center h2{ text-align: center;font: 30px facebook Letter Faces; margin: 50px 0 25px 0;}
+.content_center h2{ text-align: center;font: 30px facebook Letter Faces; margin: 75px 0 25px 0;}
 .box_home{ width:32%; float:left;margin: 0 1.3% 0 0;}
 .box_home img{margin: auto; display: block;}
 .box_home p{width: 260px; margin: 10px auto;}
@@ -479,6 +498,50 @@ footer{ background:url(../images/bg_footer.png) repeat-x; height:308px; float:le
 #box-esq{float:left;}
 #box-central{ float: right;}
 #box-central input{ cursor:pointer;}
-#chart_div{ float:left!important;margin: 50px 0 0 0;}
+#chart_div{    background: url(../images/grafico-teste.png) no-repeat;
+    height: 350px;
+    width: 100%; float:left!important;margin: 50px 0 0 0;}
 .box-info label{font: 22px facebook Letter Faces;}
 .box-info{font: 16px arial;}
+
+
+.tabela_dieta {    
+	border: 1px solid black;
+	box-shadow: 0px 0px 13px;
+	border-radius: 5px;
+    text-align: left;
+    margin: 10px 0px 0 15px;
+    width: 100%; }
+
+.salvar_dieta { margin: 50px 0 20px 95px;}
+
+.grupos{width: 280px;
+    margin: 10px 0 0 0px;
+    padding: 5px 0px 5px 5px;
+    border: 1px solid green;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px;}
+
+.grupos label { margin: 5px 0 0 0; } 
+
+#porcao {width: 25px; margin: 5px 0 0 0;}
+
+#porcoes_dieta {font-size: 20px; border: 1px solid black; border-radius: 10px; box-shadow: 0px 0px 10px; width: 265px; padding: 10px 0px 10px 15px; margin-top: 60px;}
+
+#grupos_alimentos { margin: -184px -40px 0 0;}
+
+#recomendacao_alimentos {font-size: 20px; text-align: left; border: 1px solid black; border-radius: 10px; box-shadow: 0px 0px 10px; width: 265px; padding: 10px 0px 10px 15px; margin: -251px 0 0 775px;}
+
+#porcoes_alimentos {font-size: 20px; border: 1px solid black; border-radius: 10px; box-shadow: 0px 0px 10px; width: 430px; padding: 10px 0px 10px 15px; margin: -184px 0 0 305px; text-align: left;}
+
+#recomenda_refeicao { border: 1px solid black; margin: -10px 0px 0 -15px; padding: 0 0 0 55px; }
+
+#patologias { height:125px; }
+
+#medicacoes { width:480px; height:125px; border: 1px solid black; border-radius: 6px; }
+
+#antropometrico input { width: 455px; }
+
+#imc { width: 435px; }
+
+#paciente {font-size: 22px;}

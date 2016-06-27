@@ -14,13 +14,7 @@ function addalimento(aux){
   		$("."+aux).show(500);
 		$(".TB_overlay").show(500);
 }
-function addlistafavoritos(){
-	$("#msg_pop .resultado li").each(function(i) {
-		var idUnico = $(this).attr("class");
-			getLinha(idUnico);
-		});
-		$(".pop").hide(500);
-	}
+
 	function getLinha(id) {
 		var a = 0;
 		var calorias = $(".content1 "+'.'+id+' .calorias').html();
@@ -72,11 +66,12 @@ function addlistafavoritos(){
 			}
 	};
 
-	function addRefeicao(){
-			var nomeRefeicao = $("input[name=nome]").val();
+	function addDieta(){
+			var nomeDieta = $("input[name=nome]").val();
+			var nomePaciente = $("input[name=paciente]").val();
 			var ali;
 			var vetor = new Array();
-			if(nomeRefeicao != ""){
+			if(nomeDieta != "" && nomePaciente !=""){
 				$("#nova_tabela li").each(function(i) {
 					var idAlimento = $(this).attr("class");
 					var qtdAlimento = $("."+idAlimento +" "+".qtd").html();
@@ -84,19 +79,26 @@ function addlistafavoritos(){
 					vetor[i] = ali;
 				});
 				var myJSONText = JSON.stringify(vetor);
-				ajaxAlimento(nomeRefeicao, myJSONText);
-			}else{
-				$("#msg_pop").html("Preencha o nome da refeição !");
-				$("#nome").css("border","1px solid red");
-				$(".pop").show(500);
+				ajaxAlimento(nomeDieta, myJSONText);
 			}
+				if (nomeDieta == null ) {
+					$("#nome").css("border","1px solid red");
+					$("#msg_pop").html("Preencha o nome da dieta !");
+					$(".pop").show(500);
+				}
+				if (nomePaciente == null) {
+					$("#paciente").css("border","1px solid red");
+					$("#msg_pop").html("Preencha o nome da dieta !");
+					$(".pop").show(500);
+				}
+			
 	}
 	
 	function ajaxAlimento(nomeRefeicao, myJSONText){
 		var idUsuario = "<?php echo $_SESSION["idusuario"]?>";
 		$.ajax({        
 		   type: "POST",
-		   url: "../controller/pesquisa_alimentos.php",
+		   url: "../controller/cadastrar_dieta.php",
 		   data: { nome: nomeRefeicao, alimentos: myJSONText, id: idUsuario },
 		   success: function(data) {
 			   //alert("aaa" + data);
@@ -115,18 +117,17 @@ var idUsuario = "<?php echo $_SESSION["idusuario"]?>";
 </head>
 
 <body id="alimento">
- <?php if(!isset($_SESSION["id"])){include '../skin/includes/header.inc.php';}else{include '../skin/includes/headerLogout.inc.php';} ?>
+<?php if(!isset($_SESSION["id"])){include '../skin/includes/header.inc.php';}else{include '../skin/includes/headerLogout.inc.php';} ?>
    <div id="Container"> 
    <div id="Pesquisar"> 
-   <h1 class="titulo"> Pesquisa de Alimentos</h1>
+   <h1 class="titulo">Dieta</h1>
    <input type="text"  name="txtnome" id="txtnome" placeholder="O que você comeu hoje ?">
    <input type="button" name="btnPesquisar" id="btn-busca" value="Pesquisar" onclick="getDados();"/> 
-   <!-- <input type="button" value="add" id="btn-add" onclick="addalimento('addalimento');"> -->
-   <input type="button" value="" id="btn-favoritos" onclick="getListafavorito();">
+<input type="button" value="" id="btn-favoritos" onclick="getListafavorito();">
    
    </div> 
    <div id="tabela">
-   <h1 class="titulo"> Refeição</h1>
+   <h1 class="titulo">Dieta</h1>
    <div class="salvar_refeicao">
    <div class="salvar_alimentos">
    	<span id="total" >0</span>
@@ -134,9 +135,9 @@ var idUsuario = "<?php echo $_SESSION["idusuario"]?>";
    </div>
    <div>
    	<form method="POST" action="pesquisa_alimentos.php">
-        <label for="nome">Nome da Refeição:</label>
+        <label for="nome">Nome da Dieta:</label>
         <input type="text" name="nome" id="nome" />
-        <input type="button" name="acao" id="acaos" value="SALVAR" onclick="addRefeicao();"/> 
+        <input type="button" name="acao" id="acaos" value="SALVAR" onclick="addDieta();"/> 
     </form>
 
    </div>
@@ -148,7 +149,7 @@ var idUsuario = "<?php echo $_SESSION["idusuario"]?>";
    <div id="Resultado" class="resultado content1"></div> 
    </div> 
  <?php include '../skin/includes/footer.inc.php'; ?>   
-<!--    <div class="addalimento tb" id="tb2" >
+   <div class="addalimento tb" id="tb2" >
         <div id="janela_add" class="box_input">
         	<span id="btn-fechar" onclick="$('.tb').fadeOut()" class="bt_excluir3"></span>
             <h2>Cadastro de Alimentos</h2>
@@ -166,8 +167,8 @@ var idUsuario = "<?php echo $_SESSION["idusuario"]?>";
             
             </form>
         </div>
-    </div> -->
-    <!-- <div id="td1" class="TB_overlay tb" style="position:fixed;z-index:10000;top:0px;left:0px;height:100%;width:100%" onclick="$('.tb').fadeOut()">  	</div> -->
+    </div>
+    <div id="td1" class="TB_overlay tb" style="position:fixed;z-index:10000;top:0px;left:0px;height:100%;width:100%" onclick="$('.tb').fadeOut()">  	</div>
  <?php include '../skin/popup/msg.pop.php'; ?>
 </body>
 </html>

@@ -45,40 +45,115 @@ class AlimentosPDO extends BancoPDO {
 				  
 				// Se a consulta não retornar nenhum valor, exibi mensagem para o usuário 
 				echo "Não foram encontrados registros!"; }
+	}
+
+	function selecionaAlimentosDieta($tabela){
+
+
+		$stm = $this->con->prepare("SELECT * FROM ". $tabela);
+		$stm->execute();
+
+		if ($stm->rowCount() == 0){
+			"Não foi possível encontrar alimentos no grupo";
+		}
+
+		else {
+			$tabela = "<ul>
+			"; 
+			$return = "$tabela"; 
+			while ($linha = $stm->fetch(PDO::FETCH_OBJ)) { 
+
+				$return.= "<li onclick=getLinha(". $linha->id ."); class=" . $linha->id . ">";
+				$return.= "<span id=nome-alimento >" . utf8_encode($linha->nome) . "</span>"; 
+				$return.= "<div><strong>Kcal:</strong><span id=calorias class=calorias>" . utf8_encode($linha->kcal) . "			</span></div>"; 
+				$return.= "<p class=hover_add>Adicionar</p>"; 
+				$return.= "</li>"; 
 			}
+		
+			echo $return.="</ul>"; 
+		} 
+	
+	}
+	
 
 	function incluirRefeicao($nome, $id_usuario){
 	 	$hoje = date("Y-m-d");
-		$stm = $this->con->prepare("INSERT INTO refeicao (nome, data, id_usuario) VALUES ('$nome', '$hoje', '$id_usuario')");
 
+		$stm = $this->con->prepare("INSERT INTO refeicao (nome, data, usuario_id) VALUES ('$nome', '$hoje', '$id_usuario')");
 		$stm->execute();
 		//mysqli_query($this->conexao, $inserir) or die ("Não foi possível inserir a Refeição");
+			
 			
 		if ( $stm->rowCount() == 0 ) {
 			"Não foi possível inserir a refeição";
 		}
 
-		$ultimoIdRefeicao = $this->con->lastInsertId();
-
-		return $ultimoIdRefeicao;
+		else {
+			$ultimoIdRefeicao = $this->con->lastInsertId();
+			return $ultimoIdRefeicao;
+		}
 	}
 
 	function incluirRefeicaoAlimento($ultimoIdInserido, $idAlimento, $quantidade){
-		$stm = $this->con->prepare("INSERT INTO refeicao_alimento (id_refeicao ,id_alimento, quantidade) VALUES ('$ultimoIdInserido', '$idAlimento', '$quantidade')");
+		
+		$stm = $this->con->prepare("INSERT INTO refeicao_alimento (refeicao_id ,alimentos_id, quantidade) VALUES ('$ultimoIdInserido', '$idAlimento', '$quantidade')");
 
 		//$resultado = mysqli_query($this->conexao, $inserir) or die ("Não foi possível inserir a Refeição");
 		$stm->execute();
 
 		if($stm->rowCount() == 0 ) {
-			echo "Não foi possível inserir a refeição";
+
+			//echo "Não foi possível inserir o alimento na refeição";
 		}
 	}	
+
+
+	function selecionarDieta($idUsuario){
+
+		$stm = $this->con->prepare("SELECT * FROM dieta WHERE usuario_id = '$idUsuario'"); 
+
+		//sleep(1); 
+
+		$stm->execute();
+
+		if($stm->rowCount() == 0){
+
+			return null;
+		}
+
+		else {
+			
+			/*while($row = $stm->fetch(PDO::FETCH_OBJ)) {*/
+
+			$dados = $stm->fetch(PDO::FETCH_OBJ);
+
+
+			return $dados;
+				/*
+					$return = "<div id='porcoes_dieta'>";
+					$return.=	"<div><strong>Desjejum:</strong></div>";
+					$return.=	"<div><strong>Grupo do leite: </strong><span>" . utf8_encode($row->desjejum_leite) . "</span> porções.</div>";
+					$return.=	"<div><strong>Grupo do pão: </strong><span>" . utf8_encode($row->desjejum_pao) . "</span> porções.</div>";
+					$return.=	"<div><strong>Grupo da gordura: </strong><span>" . utf8_encode($row->desjejum_gordura) . "</span> porções.</div>";
+					$return.=	"<div><strong>Frios Light: </strong><span>" . utf8_encode($row->desjejum_frios) . "</span> porções.</div>";
+					$return.=   "<label>Café <strong>OU</strong> chá: à gosto.</label>
+								 </br>
+								 <label>Adoçante sucralose: 3-4 gotas.</label>
+								 </div>";
+					}
+					   
+					echo $return;*/
+
+		
+	
+		}	
+	}
 
 
 	function selecionarRefeicao($data, $idUsuario){
 
 		if (empty($data)) { 
-				$stm = $this->con->prepare("SELECT * FROM refeicao WHERE id_usuario = '$idUsuario'"); 
+				$stm = $this->con->prepare("SELECT * FROM refeicao WHERE usuario_id = '$idUsuario'"); 
 				} 
 			else { 
 				$data .= "%"; 
@@ -116,9 +191,9 @@ class AlimentosPDO extends BancoPDO {
 	}
 
 	function selecionarListaRefeicao($idRefeicao){
-		$stm = $this->con->prepare("SELECT id_alimento, quantidade, nome, peso, porcao,calorias FROM refeicao_alimento 
-				INNER JOIN alimentos ON refeicao_alimento.id_alimento = alimentos.id
-				WHERE id_refeicao = '$idRefeicao'"); 
+		$stm = $this->con->prepare("SELECT alimentos_id, quantidade, nome, peso, porcao,calorias FROM refeicao_alimento 
+				INNER JOIN alimentos ON refeicao_alimento.alimentos_id = alimentos.id
+				WHERE refeicao_id = '$idRefeicao'"); 
 		
 		sleep(1); 
 
@@ -134,7 +209,7 @@ class AlimentosPDO extends BancoPDO {
 				$total_cal = $qtd * $cal;
 				$total += $total_cal;
 				
-				$return.=	"<li class=" . $row->id_alimento . "><span id=nome-alimento >" . utf8_encode($row->nome) . "</span>";
+				$return.=	"<li class=" . $row->alimentos_id . "><span id=nome-alimento >" . utf8_encode($row->nome) . "</span>";
 				$return.=	"<div><strong>Peso:</strong><span id=peso>" . utf8_encode($row->peso) . "g</span></div>";
 				$return.=	"<div id=porcao><strong></strong><span>" . utf8_encode($row->porcao) . "</span></div>";
 				$return.=	"<div id=qtd><strong>Qtd:</strong><span id=quantidade class=qtd>". utf8_encode($row->quantidade) ."</span></div>";
@@ -162,7 +237,7 @@ class AlimentosPDO extends BancoPDO {
 	}
 
 	function listaFavoritos($id_usuario){
-		$stm = $this->con->prepare("SELECT * FROM refeicao WHERE favorito = 1 AND id_usuario = '$id_usuario'"); 
+		$stm = $this->con->prepare("SELECT * FROM refeicao WHERE favorito = 1 AND usuario_id = '$id_usuario'"); 
 		$stm->execute();
 
 		$tabela = "<div class=lista_favoritos>
@@ -186,6 +261,51 @@ class AlimentosPDO extends BancoPDO {
 	
 	}
 
+	function inserirDieta($nomeDieta, $nomePaciente, $desjejum_leite, $desjejum_pao, $desjejum_gordura, $desjejum_frios){
+
+		$stm = $this->con->prepare("INSERT INTO dieta ( usuario_id, nome, desjejum_leite, desjejum_pao, desjejum_gordura, desjejum_frios ) VALUES ('$nomePaciente', '$nomeDieta', '$desjejum_leite', '$desjejum_pao', '$desjejum_gordura', '$desjejum_frios')");
+		$stm->execute();
+
+		if( $stm->rowCount()==0 ) {
+			echo "Não foi possível criar a dieta.";
+		}
+
+		else {
+			echo "Dieta cadastrada com sucesso";
+		}
+
+	}
+
+	function criarDieta($nome, $id_usuario){
+	 	$hoje = date("Y-m-d");
+	 	try {
+	 		$this->con->beginTransaction();
+	 		$this->con->exec("INSERT INTO refeicao (nome, data, usuario_id) VALUES ('$nome', '$hoje', '$id_usuario')");
+			$ultimoIdRefeicao = $this->con->lastInsertId();
+			//var_dump($ultimoIdRefeicao);
+	 		$this->con->exec("INSERT INTO dieta (nome, refeicao_id, usuario_id) VALUES ('$nome', '$ultimoIdRefeicao', '$id_usuario')");
+			$this->con->commit();
+			
+			/*else {
+				return $ultimoIdRefeicao;
+
+				//$stm2 = $this->con->prepare("INSERT INTO dieta (nome, refeicao_id, usuario_id) VALUES ('$nome', '$ultimoIdRefeicao', '$id_usuario'");
+				//$stm2->execute();
+				var_dump($ultimoIdRefeicao);
+				if( $stm2->rowCount() == 0 ) {
+					echo "Não foi possível inserir a dieta";
+				}
+
+			}*/
+
+			//$stm = $this->con->prepare("INSERT INTO refeicao (nome, data, usuario_id) VALUES ('$nome', '$hoje', '$id_usuario')");
+			//$stm->execute();
+			//mysqli_query($this->conexao, $inserir) or die ("Não foi possível inserir a Refeição");
+		} catch (PDOException $e) {
+			$this->con->rollback();
+			echo "Erro: " . $e->getMessage();
+		}
+	}
 
 }
 

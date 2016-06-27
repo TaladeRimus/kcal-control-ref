@@ -22,5 +22,6 @@
 			session_start();
 			$_SESSION["id"] = session_id();
 			$_SESSION["idusuario"] = $return->id;
+			header("Location: ../view/user-home.php");
 		}
 	}

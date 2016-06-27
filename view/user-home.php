@@ -54,7 +54,7 @@
 
 	$user = new UsuariosPDO();
 	$dados = $user->retornaDados($_SESSION["idusuario"]);
-
+	$peso = $user->buscaPeso($_SESSION["idusuario"]);
 
 
 ?>
@@ -78,7 +78,7 @@
 				<label>Idade: </label>
 				<?php 
 
-					echo $dados->idade;
+					echo "20";/*$dados->data_nascimento;*/
 
 				 ?>
 			</li>
@@ -86,7 +86,8 @@
 				<label>Peso: </label>
 				<?php 
 
-					echo $dados->peso;
+					echo "65";/*$peso;*/
+
 					
 				 ?>
 			</li>
@@ -107,13 +108,16 @@
        		
        		<ul>
 				<li>
-					<input type="button" value="Atualizar Peso" id="btn_atualizarPeso" id="atualizarPeso" name="atualizarPeso" onClick="location.href='page_atualizacao_peso.php'">
+					<input type="button" value="Atualizar Peso" id="btn_atualizarPeso" id="atualizarPeso" name="atualizarPeso" onClick="location.href='#'">
 				</li>
 				<li>
-					<input type="button" value="Pesquisar Refeicao" id="btn_pesquisarRef" id="pesquisarRef" name="pesquisarRef" onClick="location.href='page_pesquisa_alimentos.php'">
+					<input type="button" value="Pesquisar alimentos" id="btn_pesquisarRef" id="pesquisarRef" name="pesquisarRef" onClick="location.href='page_pesquisa_alimentos.php'">
 				</li>
 				<li>
-					<input type="button" value="Selecionar Refeicao" id="btn_alterarRef" id="alterarRef" name="alterarRef" onClick="location.href='selecionarRefeicao.php'">
+					<input type="button" value="Pesquisar refeições" id="btn_alterarRef" id="alterarRef" name="alterarRef" onClick="location.href='selecionarRefeicao.php'">
+				</li>
+				<li>
+					<input type="button" value="Ver Dieta" id="btn_dietaRef" id="dietaRef" name="dietaRef" onClick="location.href='ver_dieta.php'">
 				</li>
 			</ul>
         </div>

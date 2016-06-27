@@ -10,17 +10,15 @@ class BancoPDO {
 
 
 	public $con = null;
-
 	public function conectar(){
 
 		try {
+			$this->con = new PDO($this->type.
+								 ":host=".$this->host.
+								 ";dbname=".$this->bd,
+								 $this->user,$this->pass);
 
-				$this->con = new PDO($this->type.
-									 ":host=".$this->host.
-									 ";dbname=".$this->bd,
-									 $this->user,$this->pass);
-
-				return $this->con;
+			return $this->con;
 
 			
 		} catch (Exception $e) {

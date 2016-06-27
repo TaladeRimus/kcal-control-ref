@@ -46,6 +46,35 @@ function getDados() {
 	} 
 }; xmlreq.send(null); }
 
+function getDadosDieta() { 
+	// Declaração de Variáveis 
+	
+	//var nome = document.getElementById("tablebd").value; 
+	var nome = "grupo_alimento1";
+	var result = document.getElementById("msg_pop");
+	var xmlreq = CriaRequest(); 
+
+	// Exibi a imagem de progresso 
+	//result.innerHTML = '<img src="Progresso1.gif"/>'; 
+
+	// Iniciar uma requisição 
+	xmlreq.open("GET", "../controller/selecionar_alimentos_grupo.php?tablebd=" + nome, true); 
+	
+	// Atribui uma função para ser executada sempre que houver uma mudança de ado 
+	xmlreq.onreadystatechange = function(){ 
+
+	// Verifica se foi concluído com sucesso e a conexão fechada (readyState=4) 
+	if (xmlreq.readyState == 4) { 
+
+		// Verifica se o arquivo foi encontrado com sucesso 
+		if (xmlreq.status == 200) { 
+		result.innerHTML = xmlreq.responseText; 
+		}else{ 
+			result.innerHTML = "Erro: " + xmlreq.statusText; 
+			} 
+	} 
+}; xmlreq.send(null); }
+
 
 /** * Função para enviar os dados */ 
 function getRefeicao() { 
@@ -69,6 +98,34 @@ function getRefeicao() {
 		// Verifica se o arquivo foi encontrado com sucesso 
 		if (xmlreq.status == 200) { 
 		result.innerHTML = xmlreq.responseText; 
+		}else{ 
+			result.innerHTML = "Erro: " + xmlreq.statusText; 
+			} 
+	} 
+}; xmlreq.send(null); }
+
+function getDieta() { 
+	// Declaração de Variáveis 
+	var data = document.getElementById("txtdata").value; 
+	var result = document.getElementById("resultado"); 
+	var xmlreq = CriaRequest(); 
+
+	// Exibi a imagem de progresso 
+	result.innerHTML = '<img src="Progresso1.gif"/>';
+
+	// Iniciar uma requisição 
+	xmlreq.open("GET", "../controller/pesquisa_dieta.php?txtdata=" + data + "&idusuario=" + idUsuario, true); 
+	
+	// Atribui uma função para ser executada sempre que houver uma mudança de ado 
+	xmlreq.onreadystatechange = function(){ 
+
+	// Verifica se foi concluído com sucesso e a conexão fechada (readyState=4) 
+	if (xmlreq.readyState == 4) { 
+
+		// Verifica se o arquivo foi encontrado com sucesso 
+		if (xmlreq.status == 200) { 
+		result.innerHTML = xmlreq.responseText; 
+		document.getElementById("porcoes_alimentos").style.marginTop = "-225px";
 		}else{ 
 			result.innerHTML = "Erro: " + xmlreq.statusText; 
 			} 

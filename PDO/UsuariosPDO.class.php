@@ -76,12 +76,24 @@ class UsuariosPDO extends BancoPDO {
 		}
 	}
 
-	public function buscaPeso(){
+	public function buscaPeso($id){
 
-		$stm = $this->con->prepare("SELECT *,DATE_FORMAT(data_pesagem, '%d/%m/%y')
+		$stm = $this->con->prepare("SELECT peso,DATE_FORMAT(data_pesagem, '%d/%m/%y')
 									as novaData 
-									FROM historico_peso 
+									FROM historico_peso, usuario where usuario.id = ".$id."
+									AND historico_peso.usuario_id = ".$id."
 									ORDER BY data_pesagem ASC");
+		$stm->execute();
+
+		if($stm->rowCount() == 0 ) {
+			return null;
+		}
+		else {
+			$dados = $stm->fetch(PDO::FETCH_OBJ);
+
+			return $dados->peso;
+		}
+
 	}
 
 	public function inserePeso(){
