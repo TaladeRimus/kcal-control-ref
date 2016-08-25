@@ -501,6 +501,9 @@ footer{ background:url(../images/bg_footer.png) repeat-x; height:308px; float:le
 #chart_div{    background: url(../images/grafico-teste.png) no-repeat;
     height: 350px;
     width: 100%; float:left!important;margin: 50px 0 0 0;}
+
+ #drawchart_div{ height: 350px; width: 100%; float:left!important;margin: 50px 0 0 0;}
+
 .box-info label{font: 22px facebook Letter Faces;}
 .box-info{font: 16px arial;}
 

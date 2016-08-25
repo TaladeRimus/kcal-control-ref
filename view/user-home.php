@@ -4,7 +4,16 @@
 
 		require "../controller/validation.php";
 		include "../PDO/UsuariosPDO.class.php";
-	?>
+
+	if(!isset($_SESSION["id"])){include '../skin/includes/header.inc.php';}
+	else{include '../skin/includes/headerLogout.inc.php';} 
+
+	$user = new UsuariosPDO();
+	$dados = $user->retornaDados($_SESSION["idusuario"]);
+	$peso = $user->buscaPeso($_SESSION["idusuario"]);
+	$graph = $user->buscaPesoGraph($_SESSION["idusuario"]);
+
+?>
 	<title>Kcal Control</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href="../skin/style_pesquisa.css" rel="stylesheet" type="text/css">
@@ -28,10 +37,12 @@
         data.addColumn('number', 'Peso');
         data.addRows([
         <?php
-        while($row = mysqli_fetch_array($result)) {
-          echo "['".$row['novaData'] ."',".$row['peso'] ."],";
+        	foreach ($graph as $key => $value) {
+        	
+          echo "['".$value[1] ."',".$value[0] ."],";
+        	}
 
-        }
+    
         ?>
 
         ]);
@@ -43,21 +54,12 @@
                        'height':300};
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.LineChart(document.getElementById('drawchart_div'));
         chart.draw(data, options);
       }
     </script>
 </head>
 <body>
-<?php if(!isset($_SESSION["id"])){include '../skin/includes/header.inc.php';}
-	  else{include '../skin/includes/headerLogout.inc.php';} 
-
-	$user = new UsuariosPDO();
-	$dados = $user->retornaDados($_SESSION["idusuario"]);
-	$peso = $user->buscaPeso($_SESSION["idusuario"]);
-
-
-?>
 
 <div class="content_center">
 
@@ -78,7 +80,7 @@
 				<label>Idade: </label>
 				<?php 
 
-					echo "20";/*$dados->data_nascimento;*/
+					echo $newDate = date("Y") - date("Y", strtotime($dados->data_nascimento));
 
 				 ?>
 			</li>
@@ -86,11 +88,12 @@
 				<label>Peso: </label>
 				<?php 
 
-					echo "65";/*$peso;*/
+					echo $peso;
 
 					
 				 ?>
 			</li>
+	
 			<li>
 				<label>Objetivo: </label>
 				<?php 
@@ -108,7 +111,7 @@
        		
        		<ul>
 				<li>
-					<input type="button" value="Atualizar Peso" id="btn_atualizarPeso" id="atualizarPeso" name="atualizarPeso" onClick="location.href='#'">
+					<input type="button" value="Atualizar Peso" id="btn_atualizarPeso" id="atualizarPeso" name="atualizarPeso" onClick="location.href='page_atualiza_peso.php'">
 				</li>
 				<li>
 					<input type="button" value="Pesquisar alimentos" id="btn_pesquisarRef" id="pesquisarRef" name="pesquisarRef" onClick="location.href='page_pesquisa_alimentos.php'">
@@ -122,7 +125,8 @@
 			</ul>
         </div>
     </div>
-    <div id="chart_div"></div>
+    <!-- <div id="chart_div"></div> -->
+	<div id="drawchart_div"></div>
 </div>
 <?php include '../skin/includes/footer.inc.php'; ?>
 
